@@ -451,8 +451,23 @@ class Wish_Spotlight_Widget extends Widget_Base {
             
 			while( $posts->have_posts() ): $posts->the_post();
                 $post_id   = get_the_ID();
+                $post_type = get_post_type( $post_id );
                 $title = get_the_title( $post_id );
-                $image = get_the_post_thumbnail_url( $post_id );
+                if( $post_type == 'young_innovators'){
+                    $image = get_field('innovator_picture');
+                }elseif( $post_type == 'innovations' ){
+                    $image = get_field('featured_image');
+                }elseif( $post_type == 'reports' ){
+                    if(get_locale() == "en_US"){
+                        $image = get_field('cover_page_english');
+                    }else{
+                        $image = get_field('cover_page_arabic');
+                    }
+                    
+                } else{
+                    $image = get_the_post_thumbnail_url( $post_id );
+                }
+                
                 $link = get_the_permalink();
 
                 echo '<div class="wish-spotlight__item elementor-repeater-item-' . $post_id . '">';
